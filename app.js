@@ -1,12 +1,25 @@
-const express = require('express');
+const express = require("express");
+
 const app = express();
 
+const userRoutes = require("./routes/userRoutes");
+
+const loggerMiddleware = require(
+  "./middlewares/loggerMiddleware"
+);
+
+
+// APP LEVEL MIDDLEWARES
 app.use(express.json());
 
-const userRoutes = require('./routes/userRoutes');
+app.use(loggerMiddleware);
 
-app.use('/users',userRoutes);
 
-app.listen(3000,()=>{
-    console.log('Server is running on port 3000');
+// ROUTES
+app.use("/users", userRoutes);
+
+
+// SERVER
+app.listen(5000, () => {
+  console.log("Server running on port 5000");
 });

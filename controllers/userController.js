@@ -1,62 +1,93 @@
-let users = [
-    {id: 1, name: 'Himu'},
-    {id: 2, name: 'varun'}
-];
-// temporary databse only saves in ram
+const userService = require("../services/userService");
 
-exports.getUsers = (req,res)=>{
-    res.status(200).json({
-        success : true,
-        users
-    });
+const sendResponse = require("../utils/sendResponse");
+
+
+// GET USERS
+exports.getUsers = (req, res) => {
+
+  const users = userService.getAllUsers();
+
+  sendResponse(
+    res,
+    200,
+    true,
+    "Users fetched successfully",
+    users
+  );
 };
 
-exports.createUser = (req,res)=>{
-    const {name} = req.body;
-    if(!name){
-        return res.status(400).json({
-            success : true,
-            message : 'name is required'
-        });
-    }
 
-    const newUser = {
-        id:users.length + 1,
-        name
-    };
-    users.push(newUser);
+// CREATE USER
+exports.createUser = (req, res) => {
 
-    res.status(200).json({
-        success : true,
-        message : 'new user created',
-        user : newUser
-    });
+  const newUser = userService.createUser(
+    req.validatedData
+  );
+
+  sendResponse(
+    res,
+    201,
+    true,
+    "User created successfully",
+    newUser
+  );
 };
 
-exports.updateUser = (req,res)=>{
-    const {id} = req.params;
-    const {name} = req.body;
-    const user = users.find(u => u.id == id);
 
-    if(!user){
-        res.status(404).json({
-            success : false,
-            message : 'user not find'
-        });
-    }
-    user.name = name || user.name;
-    res.status(200).json({
-        success : true,
-        message : 'user updated',
-        user
-    });
+// UPDATE USER
+exports.updateUser = (req, res) => {
+
+  const id = parseInt(req.params.id);
+
+  const updatedUser =
+    userService.updateUser(
+      id,
+      req.body
+    );
+
+  if (!updatedUser) {
+
+    return sendResponse(
+      res,
+      404,
+      false,
+      "User not found"
+    );
+  }
+
+  sendResponse(
+    res,
+    200,
+    true,
+    "User updated successfully",
+    updatedUser
+  );
 };
 
-exports.deleteUser = (req,res)=>{
-    const {id} = req.params;
-    users = users.filter(u => u.id != id);
-    res.status(200).json({
-        success : true,
-        message : `user ${id} deleted`
-    });
+
+// DELETE USER
+exports.deleteUser = (req, res) => {
+
+  const id = parseInt(req.params.id);
+
+  const deletedUser =
+    userService.deleteUser(id);
+
+  if (!deletedUser) {
+
+    return sendResponse(
+      res,
+      404,
+      false,
+      "User not found"
+    );
+  }
+
+  sendResponse(
+    res,
+    200,
+    true,
+    "User deleted successfully"
+  );
 };
