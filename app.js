@@ -3,6 +3,8 @@ const express = require("express");
 const app = express();
 
 const userRoutes = require("./routes/userRoutes");
+const connectDB = require("./config/db");
+connectDB();
 
 const loggerMiddleware = require(
   "./middlewares/loggerMiddleware"

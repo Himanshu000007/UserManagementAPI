@@ -8,7 +8,10 @@ const {
   getUsers,
   createUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  getUserById,
+  getUserByEmail,
+  searchUsersByName
 } = require("../controllers/userController");
 
 
@@ -31,6 +34,12 @@ const {
 // GET USERS
 router.get("/", getUsers);
 
+router.get("/search/:name",searchUsersByName);
+
+
+router.get("/:id", getUserById);
+
+router.get("/email/:email",getUserByEmail);
 
 // CREATE USER
 router.post(
@@ -46,6 +55,7 @@ router.patch("/:id", updateUser);
 
 // DELETE USER
 router.delete("/:id", deleteUser);
+
 
 
 module.exports = router;

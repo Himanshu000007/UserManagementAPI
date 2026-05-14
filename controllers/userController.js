@@ -4,9 +4,13 @@ const sendResponse = require("../utils/sendResponse");
 
 
 // GET USERS
-exports.getUsers = (req, res) => {
+exports.getUsers = async (
+  req,
+  res
+) => {
 
-  const users = userService.getAllUsers();
+  const users =
+    await userService.getAllUsers();
 
   sendResponse(
     res,
@@ -19,11 +23,15 @@ exports.getUsers = (req, res) => {
 
 
 // CREATE USER
-exports.createUser = (req, res) => {
+exports.createUser = async (
+  req,
+  res
+) => {
 
-  const newUser = userService.createUser(
-    req.validatedData
-  );
+  const newUser =
+    await userService.createUser(
+      req.validatedData
+    );
 
   sendResponse(
     res,
@@ -36,12 +44,15 @@ exports.createUser = (req, res) => {
 
 
 // UPDATE USER
-exports.updateUser = (req, res) => {
+exports.updateUser = async (
+  req,
+  res
+) => {
 
-  const id = parseInt(req.params.id);
+  const id = req.params.id;
 
   const updatedUser =
-    userService.updateUser(
+    await userService.updateUser(
       id,
       req.body
     );
@@ -67,12 +78,15 @@ exports.updateUser = (req, res) => {
 
 
 // DELETE USER
-exports.deleteUser = (req, res) => {
+exports.deleteUser = async (
+  req,
+  res
+) => {
 
-  const id = parseInt(req.params.id);
+  const id = req.params.id;
 
   const deletedUser =
-    userService.deleteUser(id);
+    await userService.deleteUser(id);
 
   if (!deletedUser) {
 
@@ -89,5 +103,86 @@ exports.deleteUser = (req, res) => {
     200,
     true,
     "User deleted successfully"
+  );
+};
+
+exports.getUserById = async (
+  req,
+  res
+) => {
+
+  const id = req.params.id;
+
+  const user =
+    await userService.getUserById(id);
+
+  if (!user) {
+
+    return sendResponse(
+      res,
+      404,
+      false,
+      "User not found"
+    );
+  }
+
+  sendResponse(
+    res,
+    200,
+    true,
+    "User fetched successfully",
+    user
+  );
+};
+
+exports.getUserByEmail = async (
+  req,
+  res
+) => {
+
+  const email = req.params.email;
+
+  const user =
+    await userService.getUserByEmail(
+      email
+    );
+
+  if (!user) {
+
+    return sendResponse(
+      res,
+      404,
+      false,
+      "User not found"
+    );
+  }
+
+  sendResponse(
+    res,
+    200,
+    true,
+    "User fetched successfully",
+    user
+  );
+};
+
+exports.searchUsersByName = async (
+  req,
+  res
+) => {
+
+  const name = req.params.name;
+
+  const users =
+    await userService.searchUsersByName(
+      name
+    );
+
+  sendResponse(
+    res,
+    200,
+    true,
+    "Users fetched successfully",
+    users
   );
 };

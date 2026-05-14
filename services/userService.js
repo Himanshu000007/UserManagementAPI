@@ -1,58 +1,72 @@
-const users = require("../data/users");
+const User = require("../models/User");
 
 
 // GET USERS
-exports.getAllUsers = () => {
-
+exports.getAllUsers = async () => {
+  const users = await User.find();
   return users;
 };
 
 
 // CREATE USER
-exports.createUser = (userData) => {
+exports.createUser = async (
+userData) => {
 
-  const newUser = {
-    id: users.length + 1,
-    ...userData
-  };
-
-  users.push(newUser);
+  const newUser =
+    await User.create(userData);
 
   return newUser;
 };
 
 
 // UPDATE USER
-exports.updateUser = (id, updatedData) => {
+exports.updateUser = async (
+  id,
+  updatedData
+) => {
 
-  const user = users.find(u => u.id === id);
-
-  if (!user) {
-    return null;
-  }
-
-  if (updatedData.name) {
-    user.name = updatedData.name;
-  }
-
-  if (updatedData.email) {
-    user.email = updatedData.email;
-  }
-
-  return user;
+  return await User.findByIdAndUpdate(
+    id,
+    updatedData,
+    {
+      new: true
+    }
+  );
 };
 
 
 // DELETE USER
-exports.deleteUser = (id) => {
+exports.deleteUser = async (id) => {
 
-  const index = users.findIndex(
-    u => u.id === id
-  );
+  return await User.findByIdAndDelete(id);
 
-  if (index === -1) {
-    return null;
-  }
+};
 
-  return users.splice(index, 1);
+exports.getUserById = async (
+  id
+) => {
+
+  return await User.findById(id);
+
+};
+
+exports.getUserByEmail = async (
+  email
+) => {
+
+  return await User.findOne({
+    email: email
+  });
+
+};
+
+
+exports.searchUsersByName = async (
+  name
+) => {
+
+  return await User.find({
+    name: name
+  });
+
 };
