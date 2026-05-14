@@ -9,6 +9,8 @@ exports.createUserSchema = z.object({
 
   email: z
     .string()
-    .email("Invalid email format")
+    .email("Invalid email format"),
+    
+    age: z.number()
 
 });

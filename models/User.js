@@ -14,7 +14,11 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
     lowercase: true
-  }
+  },
+  age: {
+  type: Number,
+  required: true
+}
 
 }, {
   timestamps: true

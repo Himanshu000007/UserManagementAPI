@@ -6,9 +6,8 @@ const userRoutes = require("./routes/userRoutes");
 const connectDB = require("./config/db");
 connectDB();
 
-const loggerMiddleware = require(
-  "./middlewares/loggerMiddleware"
-);
+const loggerMiddleware = require("./middlewares/loggerMiddleware");
+const errorMiddleware = require("./middlewares/errorMiddleware");
 
 
 // APP LEVEL MIDDLEWARES
@@ -19,6 +18,7 @@ app.use(loggerMiddleware);
 
 // ROUTES
 app.use("/users", userRoutes);
+app.use(errorMiddleware);
 
 
 // SERVER
