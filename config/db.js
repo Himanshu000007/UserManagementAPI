@@ -1,23 +1,22 @@
+
 const mongoose = require("mongoose");
 
 const connectDB = async () => {
 
-  try {
+    try {
 
-    await mongoose.connect(
-      "mongodb://127.0.0.1:27017/UserManagementDB"
-    );
+        await mongoose.connect(process.env.MONGO_URI);
 
-    console.log("MongoDB Connected");
+        console.log("MongoDB Connected");
 
-  } catch (error) {
+    } catch (error) {
 
-    console.log("Database connection failed");
+        console.log("DB Connection Error:", error.message);
 
-    console.log(error.message);
-
-    process.exit(1);
-  }
+        process.exit(1);
+    }
 };
+
+module.exports = connectDB;
 
 module.exports = connectDB;

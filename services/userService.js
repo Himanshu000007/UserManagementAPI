@@ -34,7 +34,6 @@ exports.updateUser = async (
   );
 };
 
-
 // DELETE USER
 exports.deleteUser = async (id) => {
 
