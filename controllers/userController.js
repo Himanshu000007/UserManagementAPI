@@ -6,7 +6,7 @@ const sendResponse = require("../utils/sendResponse");
 // GET USERS
 exports.getUsers = async (req, res) => {
 
-    const users = await User.find();
+    const users = await userService.getAllUsers();
 
     res.status(200).json({
         success: true,
